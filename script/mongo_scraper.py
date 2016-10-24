@@ -38,6 +38,12 @@ def scrapeAlpha():
         html = smart_unicode(html_l)
         coll.insert({"url":url, "html":html})
 
+def get_state_urls(filepath):
+    with open(filepath, 'r') as f:
+        return f.read().split(',')
+        
+
+
 def brewUrls():
     ap = db.alphapages
     coll = db.brewUrls
@@ -87,7 +93,7 @@ def brewPages():
 def beerUrls():
     bp = db.brewPages
     coll = db.beerUrls
-    
+
     for doc in bp.find():
         brew_id = doc['brewid']
         brew_url = doc['url']
@@ -221,31 +227,33 @@ def getReviews():
     coll = db.data
 
     for doc in rp.find(no_cursor_timeout=True):
-        soup = BeautifulSoup(doc['html'])       
-        beer_name, brewery_name = getNames(soup)
-        style = getStyle(soup)
-        users = getUsers(soup)
-        ratings = getRatings(soup)
-        text = getText(soup)
-        
-        for i, rating in enumerate(ratings):
-            coll.insert({
-                    'brewid': doc['brewid'],
-                    'brewurl': doc['brewurl'],
-                    'beerid' : doc['beerid'],
-                    'beerurl' : doc['beerurl'],
-                    'beername' : beer_name,
-                    'breweryname' : brewery_name,
-                    'style' : style,
-                    'username' : users[i][0],
-                    'userid' : users[i][1],
-                    'aroma' : rating[0],
-                    'appearance' : rating[1],
-                    'taste' : rating[2],
-                    'palate' : rating[3],
-                    'overall' : rating[4],
-                    'text' : text[i]
-                })
-
-
-
+        try:
+            soup = BeautifulSoup(doc['html'])
+            beer_name, brewery_name = getNames(soup)
+            style = getStyle(soup)
+            users = getUsers(soup)
+            ratings = getRatings(soup)
+            text = getText(soup)
+        except KeyboardInterrupt:
+            raise
+        except:
+            continue
+        else:
+            for i, rating in enumerate(ratings):
+                coll.insert({
+                        'brewid': doc['brewid'],
+                        'brewurl': doc['brewurl'],
+                        'beerid' : doc['beerid'],
+                        'beerurl' : doc['beerurl'],
+                        'beername' : beer_name,
+                        'breweryname' : brewery_name,
+                        'style' : style,
+                        'username' : users[i][0],
+                        'userid' : users[i][1],
+                        'aroma' : rating[0],
+                        'appearance' : rating[1],
+                        'taste' : rating[2],
+                        'palate' : rating[3],
+                        'overall' : rating[4],
+                        'text' : text[i]
+                    })
