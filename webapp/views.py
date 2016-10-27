@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template
+import profile_scraper as ps
 app = Flask(__name__)
 
 @app.route('/')
@@ -14,7 +15,11 @@ def cover():
 
 @app.route('/results', methods=['POST'])
 def url():
-    return request.form['user_input']
+    profile = request.form['user_input']
+    user_id = int(profile.split('/')[-2])
+    reviews = ps.scrapeProfile(user_id)
+    return str(reviews)
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', debug=True)
