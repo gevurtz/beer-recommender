@@ -1,3 +1,4 @@
+from sys import argv
 from flask import Flask, request, render_template
 import profile_scraper as ps
 import loadmodel as mod
@@ -24,4 +25,11 @@ def url():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    if len(argv) > 1:
+        if argv[1] == 'local':
+            app.run(host='0.0.0.0', debug=True)
+        elif argv[1] == 'open':
+            app.run(host='0.0.0.0', port=80, debug=False)
+        else: print 'invalid args: use args "local" to run on localhost w/ debug enabled or "open" to run on port 80, w/ debug disabled'
+
+    else: print 'specify args "local" or "open"'
