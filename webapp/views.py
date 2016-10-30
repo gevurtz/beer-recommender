@@ -1,7 +1,11 @@
 from sys import argv
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, Markup
 import profile_scraper as ps
 import loadmodel as mod
+import cPickle as pickle
+import pandas as pd
+
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -18,10 +22,18 @@ def cover():
 
 @app.route('/results', methods=['POST'])
 def url():
-    profile = request.form['user_input']
-    user_id = int(profile.split('/')[-2])
-    reviews = ps.scrapeProfile(user_id)
-    return mod.get_recommendation(reviews, 'rankmodel')
+    try:
+        profile = request.form['user_input']
+        user_id = int(profile.split('/')[-2])
+        if mod.is_user:
+            recs = mod.established_user_rec(user_id, 'rankmodel')
+        else:
+            reviews = ps.scrapeProfile(user_id)
+            recs = mod.get_new_recommendation(reviews, 'rankmodel')
+        table = Markup(mod.format_results(recs))
+        return render_template('results.html', table= table)
+    except:
+        return 'You broke it :('
 
 
 if __name__ == '__main__':

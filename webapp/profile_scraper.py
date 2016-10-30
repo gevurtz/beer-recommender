@@ -82,8 +82,6 @@ def gatherReviews(soup_beerid_list):
     reviews.append((review, beer_id))
   return reviews
 
-
-
 def getId(url):
   return int(url.split('/')[-3])
 
