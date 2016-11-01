@@ -4,13 +4,16 @@ import profile_scraper as ps
 import loadmodel as mod
 import cPickle as pickle
 import pandas as pd
+import json
+
 
 
 app = Flask(__name__)
 
 @app.route('/')
 def start():
-    return render_template('start.html')
+    beer_list = mod.beer_json()
+    return render_template('start.html', beers = beer_list)
     
 @app.route('/index')
 def index():
@@ -35,6 +38,15 @@ def url():
     except:
         return 'You broke it :('
 
+@app.route('/similar', methods=['POST'])
+def similar():
+    try:
+        beer = request.form['single_beer']
+        recs = mod.get_similar_beers(beer, 'similarity')
+        table = Markup(mod.format_similar(recs))
+        return render_template('similar.html', table=table, beer=beer)
+    except:
+        return 'Error: please check input and try again'
 
 if __name__ == '__main__':
     if len(argv) > 1:
@@ -43,5 +55,4 @@ if __name__ == '__main__':
         elif argv[1] == 'open':
             app.run(host='0.0.0.0', port=80, debug=False)
         else: print 'invalid args: use args "local" to run on localhost w/ debug enabled or "open" to run on port 80, w/ debug disabled'
-
     else: print 'specify args "local" or "open"'

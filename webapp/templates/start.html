@@ -16,43 +16,66 @@
 
     <!-- Custom styles for this template -->
     <link href="../static/css/start.css" rel="stylesheet">
+    <link href="../static/css/typeaheadbs3.css">
   </head>
-
   <body>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="/">Nextround.beer</a>
-<!--         </div>
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="#">Page 1</a></li>
-          <li><a href="#">Page 2</a></li> 
-          <li><a href="#">Page 3</a></li> 
-        </ul>
-      </div> -->
     </nav>
     <div class="container-fluid">
       <div style="background:orange" class="jumbotron">
         <h1 class="text-primary">Nextround.beer</h1>
-        <p class="lead">Nextround.beer is a craft beer recommendation system built using turi.</p>
+        <p class="lead">Nextround.beer is a beer recommendation system built with turi Graphlab.</p>
       </div>
     </div>
     <div class="container">
-      <form action="/results" method="POST">
+      <form class="form-group"  action="/results" method="POST">
         <div class="form-group">
-          <label>RateBeer.com profile url</label>
-          <input type="url" class="form-control" placeholder="example: https://www.ratebeer.com/user/55555/" name='user_input'>
+          <label class="control-label">Import your RateBeer.com profile url:</label>
+          <input type="url" class="form-control" id="formGroupInputLarge" placeholder="example: https://www.ratebeer.com/user/55555/" name='user_input'>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+          <button type="submit">Submit</button>
       </form>
     </div>
-
+    <br></br>
+    <h3 align="center" class='text-primary', >~OR~</h3>
+    <br></br>
+    <div class="container">
+    <div class="col-lg-4">
+      <form class="form-group"  action="/similar" method="POST">
+        <span class="twitter-typeahead", style="display: inline-block">
+          <label class="control-label">Find beers similar to:</label>
+          <div id= "prefetch" class="form-group">
+            <input type="text" class="typeahead form-control tt-input" placeholder="your favorite beer" name='single_beer'>
+            <button type="submit">Submit</button>
+          </div>
+        </span>
+      </form>
+    </div>
+    </div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/typeahead.bundle.js"></script>
+    <script type="text/javascript">
+      var beers = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: '../static/js/beers.json'
+      });
+
+      $('#prefetch .typeahead').typeahead(null, {
+        hint: 'true',
+        highlight: 'true',
+        minLength: 1,
+        name: 'beers',
+        source: beers
+      });
+    </script>
   </body>
 </html>
