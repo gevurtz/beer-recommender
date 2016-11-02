@@ -23,6 +23,8 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="/">Nextround.beer</a>
+        </div>
+      </div>
     </nav>
     <div class="container-fluid">
       <div style="background:orange" class="jumbotron">
@@ -30,18 +32,6 @@
         <p class="lead">Nextround.beer is a beer recommendation system built with turi Graphlab.</p>
       </div>
     </div>
-    <div class="container">
-      <form class="form-group"  action="/results" method="POST">
-        <div class="form-group">
-          <label class="control-label">Import your RateBeer.com profile url:</label>
-          <input type="url" class="form-control" id="formGroupInputLarge" placeholder="example: https://www.ratebeer.com/user/55555/" name='user_input'>
-        </div>
-          <button type="submit">Submit</button>
-      </form>
-    </div>
-    <br></br>
-    <h3 align="center" class='text-primary', >~OR~</h3>
-    <br></br>
     <div class="container">
     <div class="col-lg-4">
       <form class="form-group"  action="/similar" method="POST">
@@ -55,6 +45,26 @@
       </form>
     </div>
     </div>
+    <br></br>
+    <br></br>
+    <h3 align="center" class='text-primary', >~OR~</h3>
+    <br></br>
+    <div class="container">
+      <form class="form-group"  action="/results" method="POST">
+        <div class="form-group">
+          <label class="control-label">Import your RateBeer.com profile url:</label>
+          <input type="url" class="form-control" id="formGroupInputLarge" placeholder="example: https://www.ratebeer.com/user/55555/" name='user_input'>
+        </div>
+          <button type="submit">Submit</button>
+      </form>
+    </div>
+    <br></br>
+    <div class="container">
+      <a class="text-primary" href="https://github.com/gevurtz/beer-recommender">Find the code for this project here</a>
+    </div>
+    <br></br>
+  </body>
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -77,5 +87,4 @@
         source: beers
       });
     </script>
-  </body>
 </html>
